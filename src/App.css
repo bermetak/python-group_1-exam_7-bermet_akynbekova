@@ -3,5 +3,14 @@
 }
 
 .menuitem {
+  height: auto;
+  width: 60px;
+}
+
+.menuitemname {
   text-transform: capitalize;
+}
+
+.button {
+  border-radius: 10%;
 }
