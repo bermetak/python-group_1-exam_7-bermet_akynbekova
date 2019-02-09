@@ -19,7 +19,7 @@ const MENU = [
 class App extends Component {
     state = {
         order: [
-            {name: 'coffee', count: 5, total: 0},
+            {name: 'coffee', count: 0, total: 0},
             {name: 'tea', count: 0, total: 0},
             {name: 'ice-cream', count: 0, total: 0},
             {name: 'hamburger', count: 0, total: 0},
@@ -29,41 +29,62 @@ class App extends Component {
     };
 
     addMenuItem = (name, value) => {
+        {
+            console.log(name, value)
+        }
+        let index = this.state.order.findIndex(item => item.name === name);
+        let price = MENU.find(item => item.name === name).price;
+        let orderItem = {...this.state.order[index]};
+        orderItem.count += value;
 
-    }
+        orderItem.total = orderItem.count * price;
+
+
+        let order = [...this.state.order];
+        order[index] = orderItem;
+        let state = {...this.state, order};
+
+        this.setState(state);
+    };
 
     getTotal = () => {
+        let total = 0;
+        for(let i = 0; i < this.state.order.length; i++) {
+            total += this.state.order[i].total;
+        }
+        return total;
 
-    }
+
+    };
+
     render() {
         return (
             <div className="App">
-                <div className="container row mt-3">
-                    <Order total={this.getTotal()}>
+                <div className="container mt-3">
+                    <div className='row'>
+                    <Order total={this.getTotal()} >
+
                         {this.state.order.map(item =>
-                            <OrderDetails orderitem={item} key={item.name}
+                            <OrderDetails orderitem={item} key={item.name} addMenuItem={this.addMenuItem}
                             />
                         )}
                     </Order>
 
 
+                    <Menu>
+                        {MENU.map(item =>
+                            <MenuItems menuitem={item} key={item.name} addMenuItem={this.addMenuItem}>
 
 
-                        <Menu>
-                            {MENU.map(item =>
-                                <MenuItems menuitem={item} key={item.name} addMenuItem={this.addMenuItem}>
-                                    {console.log(item)}
+                            </MenuItems>
+                        )}
+                    </Menu>
 
-
-                                </MenuItems>
-                            )}
-                        </Menu>
-
-
+                    </div>
                 </div>
             </div>
-    );
+        );
     }
-    }
+}
 
-    export default App;
+export default App;
